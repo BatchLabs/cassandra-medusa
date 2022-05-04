@@ -58,12 +58,15 @@ jobs:
     # Build debian packages
     strategy:
       matrix:
-        suite: [focal, bionic]
+        # Focal builds are broken in CI, we can only build bionic for now
+        #suite: [focal, bionic]
+        suite: [bionic]
         include:
-          - suite: focal
-            os-version: ubuntu-20.04
+          #- suite: focal
+          #  os-version: ubuntu-20.04
           - suite: bionic
             os-version: ubuntu-18.04
+      fail-fast: false
     runs-on: ${{ matrix.os-version }}
     steps:
     - uses: actions/checkout@v2
@@ -270,11 +273,6 @@ jobs:
         mv tests/integration/.coverage .
         coverage xml
 
-    - name: Setup tmate session
-      if: "failure()"
-      uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 30
-
     - uses: codecov/codecov-action@v1
       name: Report code coverage
   
@@ -309,12 +307,15 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     strategy:
       matrix:
-        suite: [focal, bionic]
+        # Focal builds are broken in CI, we can only build bionic for now
+        #suite: [focal, bionic]
+        suite: [bionic]
         include:
-          - suite: focal
-            os-version: ubuntu-20.04
+          #- suite: focal
+          #  os-version: ubuntu-20.04
           - suite: bionic
             os-version: ubuntu-18.04
+      fail-fast: false
     runs-on: ${{ matrix.os-version }}
     steps:
     - uses: actions/checkout@v2
